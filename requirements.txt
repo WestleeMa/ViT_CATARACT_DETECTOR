@@ -1,5 +1,6 @@
 Django>=4.2
 torch>=2.0
+torchvision
 transformers>=4.26
 safetensors
 Pillow
