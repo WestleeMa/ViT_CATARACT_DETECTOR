@@ -1,0 +1,1 @@
+web: gunicorn cataract_detector.wsgi
