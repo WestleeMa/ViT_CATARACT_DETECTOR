@@ -8,6 +8,7 @@ from transformers import ViTForImageClassification
 import gdown
 import zipfile
 
+MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', 'vit_cataract_model')
 def download_model_if_needed():
     if not os.path.exists(MODEL_DIR):
         os.makedirs(MODEL_DIR, exist_ok=True)
@@ -26,7 +27,6 @@ def download_model_if_needed():
         os.remove(output)
 
 # Load model sekali saat server start
-MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', 'vit_cataract_model')
 download_model_if_needed()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = ViTForImageClassification.from_pretrained(MODEL_DIR, use_safetensors=True)
