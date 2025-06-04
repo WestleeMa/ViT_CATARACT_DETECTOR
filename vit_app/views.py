@@ -8,25 +8,36 @@ from transformers import ViTForImageClassification
 import gdown
 import zipfile
 
-MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', 'vit_cataract_model')
 def download_model_if_needed():
     if not os.path.exists(MODEL_DIR):
         os.makedirs(MODEL_DIR, exist_ok=True)
         print("Downloading model from Google Drive...")
 
-        # Link atau ID file .zip yang berisi model
         file_id = "1Z7q9uv0hWvTOhZCir6MLJoyTlXXgYtC7"
         url = f"https://drive.google.com/uc?id={file_id}"
         output = "vit_cataract_model.zip"
 
         gdown.download(url, output, quiet=False)
 
-        # Unzip ke folder model
+        # Extract isi zip tanpa folder root
         with zipfile.ZipFile(output, 'r') as zip_ref:
-            zip_ref.extractall(MODEL_DIR)
+            for member in zip_ref.namelist():
+                # Hilangkan folder root (misal: 'vit_cataract_model/')
+                stripped = os.path.relpath(member, start=zip_ref.namelist()[0].split('/')[0])
+                target_path = os.path.join(MODEL_DIR, stripped)
+
+                if member.endswith('/'):
+                    os.makedirs(target_path, exist_ok=True)
+                else:
+                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+                    with zip_ref.open(member) as source, open(target_path, "wb") as target:
+                        target.write(source.read())
+
         os.remove(output)
+        print("Model downloaded and extracted to:", MODEL_DIR)
 
 # Load model sekali saat server start
+MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', 'vit_cataract_model')
 download_model_if_needed()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = ViTForImageClassification.from_pretrained(MODEL_DIR, use_safetensors=True)
