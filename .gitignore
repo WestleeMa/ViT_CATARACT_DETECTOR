@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Virtual Environment
+venv/
+.venv/
+
+# VSCode
+.vscode/
+
+# System
+.DS_Store
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+
+#uploads
+media/uploads
+
+#vit_model kegedean wkwk
+vit_cataract_model
+
+# Model Checkpoints (optional, jika terlalu besar)
+# vit_cataract_model/model.safetensors

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Katarak Detector</title>
+</head>
+<body>
+    <h1>Klasifikasi Katarak</h1>
+    <p>Upload gambar mata Anda</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Prediksi</button>
+    </form>
+
+    {% if image_url %}
+        <h3>Gambar Diupload:</h3>
+        <img src="{{ image_url }}" width="300"><br>
+        <h3>Hasil Prediksi:</h3>
+        <p><strong>{{ prediction }}</strong></p>
+    {% endif %}
+</body>
+</html>
